@@ -22,7 +22,17 @@ class myCar(object):
     # =======================================================================
     def car_startup(self):
         # Implement the assignment code here.
-        pass
+        self.car.steering.center_alignment()
+        for speed, distance in [[30,15], [50,20], [70,25]]:
+            self.car.accelerator.go_forward(speed)
+            while self.car.distance_detector.get_distance() > distance:
+                continue
+            self.car.accelerator.stop()
+            self.car.accelerator.go_forward(speed)
+            time.sleep(4)
+            self.car.accelerator.go_backward(speed)
+        
+        self.car.drive_parking()
 
 if __name__ == "__main__":
     try:
