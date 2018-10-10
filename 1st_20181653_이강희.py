@@ -28,10 +28,11 @@ class myCar(object):
             while self.car.distance_detector.get_distance() > distance:
                 continue
             self.car.accelerator.stop()
+            time.sleep(0.5)
             self.car.accelerator.go_backward(speed)
             time.sleep(4)
             self.car.accelerator.stop()
-        self.car.drive_parking()
+        self.drive_parking()
 
 if __name__ == "__main__":
     try:
