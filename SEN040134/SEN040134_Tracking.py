@@ -63,12 +63,10 @@ class SEN040134_Tracking(object):
     #
     # =======================================================================
     def read_digital(self):
-        directions = ["Leftmostled", "Leftlessled", "Centerled", "Rightlessled", "Rightmostled"]
         digital_list = []
         for i in range(0, 5):
             temp = GPIO.input(self.gpio_channel[i])
             digital_list.append(0 if temp == 1 else 1)
-            print(directions[i] ,"\tdetects black line(0) or white ground(1): ", temp)
         return digital_list
 
     def is_in_line(self):
