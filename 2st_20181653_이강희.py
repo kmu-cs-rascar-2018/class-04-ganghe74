@@ -34,7 +34,7 @@ class myCar(object):
             degree = [x*y for x, y in zip(line, degree)]
             self.car.steering.turn(90 + sum(degree))
 
-        self.car.drive_parking()
+        self.drive_parking()
 
 if __name__ == "__main__":
     try:
