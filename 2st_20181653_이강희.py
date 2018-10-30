@@ -23,13 +23,8 @@ class myCar(object):
     # Complete the code to perform Second Assignment
     # =======================================================================
     def car_startup(self):
-
-#######################################
-        # 미 완 성 코 드 # 하드웨어 테스트하지 않은 코드
-#######################################
-
         self.car.steering.center_alignment()
-        self.car.accelerator.go_forward(50)
+        self.car.accelerator.go_forward(100)
         
         line_detector = self.car.line_detector
         
@@ -38,7 +33,7 @@ class myCar(object):
             degree = [-20 if line[1] else -35, -5 if line[2] else -10, 0, 5 if line[2] else 10, 20 if line[3] else 35]
             degree = [x*y for x, y in zip(line, degree)]
             self.car.steering.turn(90 + sum(degree))
-        
+
         self.car.drive_parking()
 
 if __name__ == "__main__":
