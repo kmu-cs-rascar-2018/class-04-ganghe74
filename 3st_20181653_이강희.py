@@ -51,9 +51,9 @@ class myCar(object):
                 self.car.accelerator.go_backward(SPEED-10)
                 while not line_detector.is_in_line():
                     continue
-                time.sleep(0.5)
                 self.car.accelerator.stop()
                 time.sleep(1)
+                self.car.steering.turn(90 + preLine[0] * -35 + preLine[4] * 35)
                 self.car.accelerator.go_forward(SPEED)
 
             line = line_detector.read_digital()
