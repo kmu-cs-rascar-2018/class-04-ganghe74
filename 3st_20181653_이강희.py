@@ -23,15 +23,14 @@ class myCar(object):
     # Complete the code to perform Second Assignment
     # =======================================================================
     def car_startup(self):
+        SPEED = 50
         self.car.steering.center_alignment()
-        self.car.accelerator.go_forward(100)
+        self.car.accelerator.go_forward(SPEED)
         
         line_detector = self.car.line_detector
-        self.car.distance_detector.get_distance()
         preLine = []
 
         while True:
-        """
             if self.car.distance_detector.get_distance() < 30: # 장애물 만나면
                 print("Obstacle Detected")
                 self.car.steering.turn(90-35) # 좌회전
@@ -44,16 +43,16 @@ class myCar(object):
                     continue
                 while not line_detector.is_in_line(): # 라인에 들어가길 기다린다.
                     continue
-        """
             if not line_detector.is_in_line(): # 라인을 벗어나면 (급커브)
                 print("Curve")
                 self.car.accelerator.stop()
-                self.car.steering.turn(90 + preLine[0] * 35 + preLine[4] * -35)
-                self.car.accelerator.go_backward(50)
+                self.car.steering.center_alignment()
+                self.car.accelerator.go_backward(SPEED)
                 while not line_detector.is_in_line():
                     continue
+                time.sleep(1)
                 self.car.accelerator.stop()
-                self.car.accelerator.go_forward(50)
+                self.car.accelerator.go_forward(SPEED)
 
             line = line_detector.read_digital()
             degree = [-20 if line[1] else -35, -5 if line[2] else -10, 0, 5 if line[2] else 10, 20 if line[3] else 35]
