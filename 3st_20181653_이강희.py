@@ -46,12 +46,14 @@ class myCar(object):
             if not line_detector.is_in_line(): # 라인을 벗어나면 (급커브)
                 print("Curve")
                 self.car.accelerator.stop()
-                self.car.steering.center_alignment()
-                self.car.accelerator.go_backward(SPEED)
+                time.sleep(1)
+                self.car.steering.turn(90 + preLine[0] * 35 + preLine[4] * -35)
+                self.car.accelerator.go_backward(SPEED-10)
                 while not line_detector.is_in_line():
                     continue
-                time.sleep(1)
+                time.sleep(0.5)
                 self.car.accelerator.stop()
+                time.sleep(1)
                 self.car.accelerator.go_forward(SPEED)
 
             line = line_detector.read_digital()
