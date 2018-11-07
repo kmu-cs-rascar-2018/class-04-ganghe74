@@ -1,0 +1,6 @@
+# File based database.
+
+turning_offset = -31
+forward_A = 1
+forward_B = 1
+debug = 0
