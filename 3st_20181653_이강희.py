@@ -23,12 +23,12 @@ class myCar(object):
     # Complete the code to perform Second Assignment
     # =======================================================================
     def car_startup(self):
-        SPEED = 50
+        SPEED = 40
         self.car.steering.center_alignment()
         self.car.accelerator.go_forward(SPEED)
         
         line_detector = self.car.line_detector
-        preLine = []
+        preLine = [0,0,0,0,0]
 
         while True:
             #if self.car.distance_detector.get_distance() < 30: # 장애물 만나면
