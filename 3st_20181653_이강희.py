@@ -31,30 +31,28 @@ class myCar(object):
         preLine = []
 
         while True:
-            if self.car.distance_detector.get_distance() < 30: # 장애물 만나면
-                print("Obstacle Detected")
-                self.car.steering.turn(90-35) # 좌회전
-                while line_detector.is_in_line(): # 라인에서 벗어나길 기다린다.
-                    continue
-                while not line_detector.is_in_line(): # 가이드라인에 들어가길 기다린다.
-                    continue
-                self.car.steering.turn(90+35) # 우회전
-                while line_detector.is_in_line(): # 가이드라인에서 벗어나길 기다린다.
-                    continue
-                while not line_detector.is_in_line(): # 라인에 들어가길 기다린다.
-                    continue
+            #if self.car.distance_detector.get_distance() < 30: # 장애물 만나면
+            #    print("Obstacle Detected")
+            #    self.car.steering.turn(90-35) # 좌회전
+            #    while line_detector.is_in_line(): # 라인에서 벗어나길 기다린다.
+            #        continue
+            #    while not line_detector.is_in_line(): # 가이드라인에 들어가길 기다린다.
+            #        continue
+            #    self.car.steering.turn(90+35) # 우회전
+            #    while line_detector.is_in_line(): # 가이드라인에서 벗어나길 기다린다.
+            #        continue
+            #    while not line_detector.is_in_line(): # 라인에 들어가길 기다린다.
+            #        continue
             if not line_detector.is_in_line(): # 라인을 벗어나면 (급커브)
                 print("Curve")
                 self.car.accelerator.stop()
-                time.sleep(1)
                 self.car.steering.turn(90 + preLine[0] * 35 + preLine[4] * -35)
-                self.car.accelerator.go_backward(SPEED-10)
-                while not line_detector.is_in_line():
-                    continue
+                self.car.accelerator.go_backward(SPEED)
+                time.sleep(0.5)
                 self.car.accelerator.stop()
-                time.sleep(1)
                 self.car.steering.turn(90 + preLine[0] * -35 + preLine[4] * 35)
                 self.car.accelerator.go_forward(SPEED)
+                time.sleep(0.5)
 
             line = line_detector.read_digital()
             degree = [-20 if line[1] else -35, -5 if line[2] else -10, 0, 5 if line[2] else 10, 20 if line[3] else 35]
