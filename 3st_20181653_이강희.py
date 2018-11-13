@@ -29,10 +29,12 @@ class myCar(object):
         
         line_detector = self.car.line_detector
         preLine = [0,0,0,0,0]
+        
+        count = 0
 
-        while True:
+        while count <= 2:
             distance = self.car.distance_detector.get_distance()
-            if 0 <= distance and distance <30: # 장애물 만나면
+            if 0 <= distance and distance < 20: # 장애물 만나면
                 print("Obstacle Detected")
                 self.car.steering.turn(90-35) # 좌회전
                 while line_detector.is_in_line(): # 라인에서 벗어나길 기다린다.
@@ -53,11 +55,11 @@ class myCar(object):
                 self.car.accelerator.stop()
                 self.car.steering.turn(90 + preLine[0] * 35 + preLine[4] * -35)
                 self.car.accelerator.go_backward(SPEED)
-                time.sleep(0.5)
+                while not line_detector.is_in_line():
+                    continue
+                time.sleep(0.1)
                 self.car.accelerator.stop()
-                self.car.steering.turn(90 + preLine[0] * -35 + preLine[4] * 35)
                 self.car.accelerator.go_forward(SPEED)
-                time.sleep(0.5)
 
             line = line_detector.read_digital()
             degree = [-20 if line[1] else -35, -5 if line[2] else -10, 0, 5 if line[2] else 10, 20 if line[3] else 35]
@@ -65,6 +67,13 @@ class myCar(object):
             self.car.steering.turn(90 + sum(degree))
 
             preLine = line
+
+            if [1,1,1,1,1] == line:
+                self.car.steering.center_alignment()
+                while line_detector.read_digital() == [1,1,1,1,1]:
+                    continue
+                count += 1
+                print("meet end", count)
 
         self.drive_parking()
 
