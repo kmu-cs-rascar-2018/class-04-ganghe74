@@ -31,18 +31,22 @@ class myCar(object):
         preLine = [0,0,0,0,0]
 
         while True:
-            #if self.car.distance_detector.get_distance() < 30: # 장애물 만나면
-            #    print("Obstacle Detected")
-            #    self.car.steering.turn(90-35) # 좌회전
-            #    while line_detector.is_in_line(): # 라인에서 벗어나길 기다린다.
-            #        continue
-            #    while not line_detector.is_in_line(): # 가이드라인에 들어가길 기다린다.
-            #        continue
-            #    self.car.steering.turn(90+35) # 우회전
-            #    while line_detector.is_in_line(): # 가이드라인에서 벗어나길 기다린다.
-            #        continue
-            #    while not line_detector.is_in_line(): # 라인에 들어가길 기다린다.
-            #        continue
+            if self.car.distance_detector.get_distance() < 30: # 장애물 만나면
+                print("Obstacle Detected")
+                self.car.steering.turn(90-35) # 좌회전
+                while line_detector.is_in_line(): # 라인에서 벗어나길 기다린다.
+                    continue
+                print("out mainline")
+                while not line_detector.is_in_line(): # 가이드라인에 들어가길 기다린다.
+                    continue
+                print("meet guideline")
+                self.car.steering.turn(90+35) # 우회전
+                while line_detector.is_in_line(): # 가이드라인에서 벗어나길 기다린다.
+                    continue
+                print("out guideline")
+                while not line_detector.is_in_line(): # 라인에 들어가길 기다린다.
+                    continue
+                print("meet mainline")
             if not line_detector.is_in_line(): # 라인을 벗어나면 (급커브)
                 print("Curve")
                 self.car.accelerator.stop()
