@@ -36,7 +36,6 @@ class Buzzer() :
             self.current += 1
             if self.finish == True :
                 break
-        print("Error occured")
 
 class myCar(object):
     def __init__(self, car_name):

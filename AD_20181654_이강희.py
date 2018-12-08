@@ -7,23 +7,30 @@
 #########################################################################
 
 from car import Car
+from BUZZER/Buzzer import Buzzer
 import time
+import threading
 
 
 class myCar(object):
 
     def __init__(self, car_name):
         self.car = Car(car_name)
+        self.buzzer = Buzzer()
 
     def drive_parking(self):
         self.car.drive_parking()
+        self.buzzer.finish = True
 
     # =======================================================================
     # 2ND_ASSIGNMENT_CODE
     # Complete the code to perform Second Assignment
     # =======================================================================
     def car_startup(self):
-        SPEED = 50
+        t = threading.Thread(target=self.buzzer.song)
+        t.start()
+
+        SPEED = 10
         self.car.steering.center_alignment()
         self.car.accelerator.go_forward(SPEED)
         
@@ -39,6 +46,9 @@ class myCar(object):
             if rgb[0] > 700 and rgb[1] < 400 and rgb[2] < 400:
                 print("RED DETECTED!!")
                 self.car.accelerator.stop()
+                SPEED = 10
+                self.car.accelerator.go_forward(SPEED)
+                time.sleep(0.5)
 
             # 장애물 감지
             distance = self.car.distance_detector.get_distance()
@@ -75,8 +85,12 @@ class myCar(object):
             degree = [-20 if line[1] else -35, -5 if line[2] else -10, 0, 5 if line[2] else 10, 20 if line[3] else 35]
             degree = [x*y for x, y in zip(line, degree)]
             self.car.steering.turn(90 + sum(degree))
-
             preLine = line
+
+            # 가속, 음악속도 조절
+            SPEED += 0.1
+            self.car.accelerator.go_forward(SPEED)
+            self.buzzer.speed = 10 / SPEED
 
             # 정지선 카운트
             if [1,1,1,1,1] == line:
