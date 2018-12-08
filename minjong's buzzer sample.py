@@ -19,24 +19,24 @@ class Buzzer() :
         GPIO.setup(self.buzzer_pin, GPIO.OUT)
         self.list1 = [2, 1, 0, 1, 2, 2, 2, 1, 1, 1, 2, 2, 2, 2, 1, 0, 1, 2, 2, 2, 1, 1, 2, 1, 0]
         self.list2 = [2, 1, 0, 1, 2, 2, 2, 1, 1, 1, 2, 2, 2, 2, 1, 0, 1, 2, 2, 2, 1, 1, 2, 1, 0]
-        self.speed = 0.1
+        self.speed = 1
         self.len = len(self.list1)
         self.current = 0
         self.finish = False
 
     def song(self):
-        try :
-            P = GPIO.PWM(self.buzzer_pin, 100)
-            P.start(5)
-            while True :
-                if self.current == self.len-1 :
-                    self.list1.extend(self.list2)
-                P.ChangeFrequency(self.scale[list[self.current]])
-                time.sleep(self.speed)
-                self.current += 1
-                if self.finish == True :
-                    break
-
+        P = GPIO.PWM(self.buzzer_pin, 100)
+        P.start(5)
+        while True :
+            if self.current == self.len-1 :
+                self.list1.extend(self.list2)
+                self.len = len(self.list1)
+            P.ChangeFrequency(self.scale[self.list1[self.current]])
+            time.sleep(self.speed)
+            self.current += 1
+            if self.finish == True :
+                break
+        print("Error occured")
 
 class myCar(object):
     def __init__(self, car_name):
@@ -45,6 +45,7 @@ class myCar(object):
 
     def drive_parking(self):
         self.car.drive_parking()
+        self.buzzer.finish = True
 
     # =======================================================================
     # 1ST_ASSIGNMENT_CODE
@@ -54,14 +55,12 @@ class myCar(object):
         t = threading.Thread(target=self.buzzer.song)
         t.start()
         a = 0
-        while True :
-            self.buzzer.speed += 0.3
-            time.sleep(1)
-            a += 1
-            if a == 20 :
-                break
-
-
+        self.car.steering.center_alignment()
+        self.car.accelerator.go_forward(50)
+        time.sleep(1)
+        self.buzzer.speed = 0.3
+        time.sleep(3)
+        self.drive_parking()
 
 
 if __name__ == "__main__":
