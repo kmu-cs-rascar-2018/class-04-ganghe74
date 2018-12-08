@@ -20,7 +20,7 @@ from SEN040134 import SEN040134_Tracking as Tracking_Sensor
 # =======================================================================
 # import ALL method in the TCS34725 RGB Module
 # =======================================================================
-#from TCS34725 import TCS34725_RGB as RGB_Sensor
+from TCS34725 import TCS34725_RGB as RGB_Sensor
 
 # =======================================================================
 # import ALL method in the SR02 Ultrasonic Module
@@ -70,14 +70,14 @@ class Car(object):
             # ================================================================
             # RGB MODULE DRIVER INITIALIZE
             # ================================================================
-            #self.color_getter = RGB_Sensor.TCS34725()
-            #if self.color_getter.get_exception_occur():
-            #    print("[ERRNO-101] There is a problem with RGB_Sensor(TCS34725)")
+            self.color_getter = RGB_Sensor.TCS34725()
+            if self.color_getter.get_exception_occur():
+                print("[ERRNO-101] There is a problem with RGB_Sensor(TCS34725)")
 
             # ================================================================
             # DISABLE RGB MODULE INTERRUPTION
             # ================================================================
-            #self.color_getter.set_interrupt(False)
+            self.color_getter.set_interrupt(False)
 
             # ================================================================
             # PCA9685(PWM 16-ch Extension Board) MODULE WAKEUP
