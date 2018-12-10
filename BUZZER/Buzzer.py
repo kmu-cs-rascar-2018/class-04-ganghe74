@@ -14,6 +14,7 @@ class Buzzer() :
         self.len = len(self.list1)
         self.current = 0
         self.finish = False
+        self.stop = False
 
     def song(self):
         P = GPIO.PWM(self.buzzer_pin, 100)
@@ -27,3 +28,9 @@ class Buzzer() :
             self.current += 1
             if self.finish == True :
                 break
+            if self.stop == True:
+                self.stop = False
+                P.stop()
+                time.sleep(3)
+                P.start(5)
+                

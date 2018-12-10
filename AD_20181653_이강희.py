@@ -7,7 +7,7 @@
 #########################################################################
 
 from car import Car
-from BUZZER/Buzzer import Buzzer
+from BUZZER.Buzzer import Buzzer
 import time
 import threading
 
@@ -30,7 +30,8 @@ class myCar(object):
         t = threading.Thread(target=self.buzzer.song)
         t.start()
 
-        SPEED = 10
+        INITIAL_SPEED = 30
+        SPEED = 30
         self.car.steering.center_alignment()
         self.car.accelerator.go_forward(SPEED)
         
@@ -38,6 +39,7 @@ class myCar(object):
         preLine = [0,0,0,0,0]
         
         count = 0
+        count_not_obs = 0
 
         while count <= 2:
 
@@ -46,17 +48,21 @@ class myCar(object):
             if rgb[0] > 700 and rgb[1] < 400 and rgb[2] < 400:
                 print("RED DETECTED!!")
                 self.car.accelerator.stop()
-                SPEED = 10
+                self.buzzer.stop = True
+                time.sleep(3)
                 self.car.accelerator.go_forward(SPEED)
                 time.sleep(0.5)
 
             # 장애물 감지
             distance = self.car.distance_detector.get_distance()
-            if 0 <= distance and distance < 30:
+            if 0 < distance < 30:
                 time.sleep(0.1)
                 if not self.car.distance_detector.get_distance() < 30: # 장애물을 재확인
                     continue
                 print("Obstacle Detected")
+                SPEED = 40
+                self.car.accelerator.go_forward(SPEED)
+                self.buzzer.speed = 20 / SPEED
                 self.car.steering.turn(90-35) # 좌회전
                 while line_detector.is_in_line():
                     continue
@@ -67,6 +73,15 @@ class myCar(object):
                     continue
                 while not line_detector.is_in_line():
                     continue
+            else:
+                count_not_obs += 1
+                if count_not_obs == 8:
+                    if SPEED < 70:
+                        SPEED += 1
+                        print("SPEED", SPEED)
+                        self.car.accelerator.go_forward(SPEED)
+                        self.buzzer.speed = 20 / SPEED
+                    count_not_obs = 0
 
             # 라인 벗어날 경우 (급커브)
             if not line_detector.is_in_line():
@@ -86,11 +101,6 @@ class myCar(object):
             degree = [x*y for x, y in zip(line, degree)]
             self.car.steering.turn(90 + sum(degree))
             preLine = line
-
-            # 가속, 음악속도 조절
-            SPEED += 0.1
-            self.car.accelerator.go_forward(SPEED)
-            self.buzzer.speed = 10 / SPEED
 
             # 정지선 카운트
             if [1,1,1,1,1] == line:
